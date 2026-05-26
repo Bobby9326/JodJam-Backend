@@ -1,0 +1,59 @@
+from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from starlette.middleware.sessions import SessionMiddleware
+
+
+from app.core.database import init_db
+from app.core.config import settings
+from app.modules.auths.auth_router import router as auth_router
+from app.modules.entries.entry_router import router as entries_router
+from app.modules.users.user_router import router as user_router
+
+
+# LOAD ENV
+
+
+
+# FASTAPI
+app = FastAPI(
+    title="My API",
+    version="1.0.0",
+)
+
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.JWT_SECRET,
+)
+
+
+# ROUTERS
+api_router = APIRouter(prefix="/api")
+
+api_router.include_router(auth_router)
+api_router.include_router(entries_router)
+api_router.include_router(user_router) 
+
+app.include_router(api_router)
+
+
+# STARTUP
+@app.on_event("startup")
+async def startup_event():
+    init_db()
+    print("APP STARTED")
+
+
+# ROOT
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/docs")

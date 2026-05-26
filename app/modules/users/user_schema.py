@@ -1,0 +1,29 @@
+from pydantic import BaseModel
+
+
+class MeResponse(BaseModel):
+    id: str
+    email: str
+    username: str
+    profile_url: str | None = None
+    bio: str | None = None
+
+
+class UpdateProfileRequest(BaseModel):
+    username: str | None = None
+    profile_url: str | None = None
+    bio: str | None = None
+
+
+class UpdateProfileResponse(BaseModel):
+    id: str
+    email: str
+    username: str
+    profile_url: str | None = None
+    bio: str | None = None
+
+
+class UploadAvatarResponse(BaseModel):
+    path: str  # storage path, e.g. "profile/abc123"
+
+    

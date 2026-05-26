@@ -1,0 +1,24 @@
+[project]
+name = "jj"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "authlib>=1.7.2",
+    "bcrypt>=5.0.0",
+    "email-validator>=2.3.0",
+    "fastapi>=0.136.1",
+    "itsdangerous>=2.2.0",
+    "passlib>=1.7.4",
+    "psycopg2-binary>=2.9.12",
+    "pydantic-settings>=2.14.1",
+    "python-dotenv>=1.2.2",
+    "python-jose[cryptography]>=3.5.0",
+    "python-multipart>=0.0.29",
+    "ruff>=0.15.14",
+    "sqlalchemy>=2.0.50",
+    "sqlmodel>=0.0.38",
+    "supabase>=2.30.0",
+    "uvicorn>=0.47.0",
+]
