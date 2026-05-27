@@ -77,3 +77,25 @@ def is_storage_path(profile_url: str | None) -> bool:
     if not profile_url:
         return False
     return not profile_url.startswith("http://") and not profile_url.startswith("https://")
+
+
+def upload_memory_image(user_id: str, date_str: str, file_bytes: bytes, content_type: str) -> str:
+    """
+    Upload memory image to entries/memories/{user_id}/{date}.
+    No upsert — memory is immutable, upload once only.
+    Returns the storage path.
+    """
+    path = f"memories/{user_id}/{date_str}"
+    url = f"{SUPABASE_URL}/storage/v1/object/{BUCKET}/{path}"
+
+    headers = _headers()
+    headers["Content-Type"] = content_type
+    # x-upsert intentionally omitted — memories cannot be overwritten
+
+    with httpx.Client() as client:
+        response = client.post(url, content=file_bytes, headers=headers)
+
+    if response.status_code not in (200, 201):
+        raise RuntimeError(f"Upload failed: {response.status_code} — {response.text}")
+
+    return path  # e.g. "memories/abc123/2026-05-26"

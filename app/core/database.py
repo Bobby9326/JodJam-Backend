@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, create_engine, Session
-from app.modules.entries.entry_model import Entry
+from app.modules.memories.memory_model import Memory
 from app.modules.users.user_model import User
 from app.modules.auths.refresh_token_model import RefreshToken
 from app.core.config import settings

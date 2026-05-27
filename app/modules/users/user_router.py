@@ -6,6 +6,7 @@ import jwt
 
 from app.core.config import settings
 from app.core.database import get_session
+from app.core.dependencies import get_current_user_id
 from app.modules.users.user_repository import UserRepository
 from app.modules.users.user_service import UserService
 from app.modules.users.user_schema import (
@@ -17,7 +18,6 @@ from app.modules.users.user_schema import (
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-access_cookie = APIKeyCookie(name="access_token", auto_error=False)
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
@@ -30,23 +30,6 @@ def get_user_service(session: Session = Depends(get_session)) -> UserService:
     return UserService(repo)
 
 
-def get_current_user_id(access_token: str = Depends(access_cookie)) -> str:
-    if not access_token:
-        raise HTTPException(status_code=401, detail="Not logged in")
-    try:
-        payload = jwt.decode(
-            access_token,
-            settings.JWT_SECRET,
-            algorithms=[settings.JWT_ALGORITHM],
-        )
-        user_id: str = payload.get("sub")
-        if not user_id:
-            raise HTTPException(status_code=401, detail="Invalid token")
-        return user_id
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token expired")
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
 
 
 # --- Endpoints ---

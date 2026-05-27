@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse
-from fastapi.security import APIKeyCookie
 from sqlmodel import Session
 
 from app.core.config import settings
 from app.core.database import get_session
+from app.core.dependencies import get_current_payload, get_current_user_id, refresh_cookie
 from app.modules.auths.auth_repository import AuthRepository
 from app.modules.auths.auth_service import AuthService
-from app.modules.auths.auth_schema import LoginResponse, MeResponse, TokenRefreshResponse, LogoutResponse
+from app.modules.auths.auth_schema import LoginResponse, TokenRefreshResponse, LogoutResponse
 from authlib.integrations.starlette_client import OAuth
 
 
@@ -15,10 +15,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 REFRESH_TOKEN_EXPIRE_DAYS = settings.REFRESH_TOKEN_EXPIRE_DAYS
 
 router = APIRouter(tags=["auth"])
-
-# COOKIE SCHEMES
-access_cookie = APIKeyCookie(name="access_token", auto_error=False)
-refresh_cookie = APIKeyCookie(name="refresh_token", auto_error=False)
 
 # OAUTH
 oauth = OAuth()
@@ -116,25 +112,12 @@ async def refresh(
 
 # ME
 @router.get("/me")
-async def me(access_token: str = Depends(access_cookie)):
-    if not access_token:
-        raise HTTPException(status_code=401, detail="Not logged in")
-
-    try:
-        from app.modules.auths.auth_service import AuthService as _AS
-        import jwt as _jwt
-        payload = _jwt.decode(
-            access_token,
-            settings.JWT_SECRET,
-            algorithms=[settings.JWT_ALGORITHM],
-        )
-        return {
-            "id": payload.get("sub"),
-            "email": payload.get("email"),
-            "username": payload.get("username"),
-        }
-    except Exception:
-        raise HTTPException(status_code=401, detail="Invalid token")
+async def me(payload: dict = Depends(get_current_payload)):
+    return {
+        "id": payload.get("sub"),
+        "email": payload.get("email"),
+        "username": payload.get("username"),
+    }
 
 
 # LOGOUT

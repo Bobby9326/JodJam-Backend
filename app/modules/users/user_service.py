@@ -1,3 +1,5 @@
+from datetime import date
+
 from app.modules.users.user_model import User
 from app.modules.users.user_repository import UserRepository
 from app.modules.users.user_schema import MeResponse, UpdateProfileResponse, UploadAvatarResponse
@@ -27,8 +29,15 @@ class UserService:
 
     def get_me(self, user_id: str) -> MeResponse:
         user = self.repo.get_user_by_id(user_id)
+        
         if not user:
             raise ValueError("User not found")
+        
+        memories = self.repo.get_user_memories(user_id)
+        first_date = min((m.memory_date for m in memories),default=None)
+        amount_of_memories = len(memories)
+        number_of_days_joined = (date.today() - first_date).days + 1 if first_date else 0
+
 
         return MeResponse(
             id=user.id,
@@ -36,6 +45,9 @@ class UserService:
             username=user.username,
             profile_url=self._resolve_profile_url(user.profile_url),
             bio=user.bio,
+            first_date=first_date,
+            amount_of_memories=amount_of_memories,
+            number_of_days_joined=number_of_days_joined,
         )
 
     def update_profile(

@@ -7,8 +7,10 @@ from starlette.middleware.sessions import SessionMiddleware
 from app.core.database import init_db
 from app.core.config import settings
 from app.modules.auths.auth_router import router as auth_router
-from app.modules.entries.entry_router import router as entries_router
+from app.modules.memories.memory_router import router as memory_router
 from app.modules.users.user_router import router as user_router
+from app.modules.stats.stat_router import router as stat_router
+
 
 
 # LOAD ENV
@@ -40,8 +42,9 @@ app.add_middleware(
 api_router = APIRouter(prefix="/api")
 
 api_router.include_router(auth_router)
-api_router.include_router(entries_router)
+api_router.include_router(memory_router)
 api_router.include_router(user_router) 
+api_router.include_router(stat_router)
 
 app.include_router(api_router)
 

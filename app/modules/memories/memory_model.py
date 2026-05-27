@@ -17,11 +17,11 @@ class Mood(str, Enum):
     LONELY = "lonely"
 
 
-class Entry(SQLModel, table=True):
-    __tablename__ = "entries"
+class Memory(SQLModel, table=True):
+    __tablename__ = "memories"
 
     __table_args__ = (
-        UniqueConstraint("user_id", "date"),
+        UniqueConstraint("user_id", "memory_date"),
     )
 
     id: UUID = Field(
@@ -35,7 +35,7 @@ class Entry(SQLModel, table=True):
         ondelete="CASCADE"
     )
 
-    date: Date = Field(
+    memory_date: Date = Field(
         nullable=False
     )
 

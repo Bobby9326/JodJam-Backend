@@ -2,6 +2,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
 from app.modules.users.user_model import User
+from app.modules.memories.memory_model import Memory
 
 
 class UserRepository:
@@ -12,6 +13,10 @@ class UserRepository:
     def get_user_by_id(self, user_id: str) -> User | None:
         statement = select(User).where(User.id == user_id)
         return self.db.exec(statement).first()
+    
+    def get_user_memories(self, user_id: str) -> list[Memory]:
+        statement = select(Memory).where(Memory.user_id == user_id)
+        return self.db.exec(statement).all()
 
     def update_user(
         self,
