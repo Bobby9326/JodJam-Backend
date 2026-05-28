@@ -35,7 +35,7 @@ def upload_profile_image(user_id: str, file_bytes: bytes, content_type: str) -> 
     return path  # e.g. "profile/abc123"
 
 
-def generate_signed_url(path: str, expires_in: int = 3600) -> str:
+def generate_signed_url(path: str, expires_in: int = 86400) -> str:
     """
     Generate a signed URL for a private storage object.
     `path` is relative to the bucket, e.g. "profile/abc123".
