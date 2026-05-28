@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(
     BaseSettings
 ):
+    FRONTEND_URL: str
 
     SUPABASE_URL: str
 
@@ -24,7 +25,7 @@ class Settings(
 
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
 
-    ENV: str = "development"
+    ENV: str 
 
     class Config:
         env_file = ".env"
