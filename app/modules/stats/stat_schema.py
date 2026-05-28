@@ -11,7 +11,7 @@ class OverviewResponse(BaseModel):
     longest_streak: int
     average_rating: float
     record_day: int
-    record_rating: int
+    record_rating: float
 
 class MoodStatsResponse(BaseModel):
     mood: str

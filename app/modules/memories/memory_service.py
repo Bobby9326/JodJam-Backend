@@ -119,6 +119,7 @@ class MemoryService:
                 note=target_memory.note,
                 mood=target_memory.mood,
                 rating=target_memory.rating,
+                img_url=_resolve_image_url(target_memory.image_path),
             )
 
         return MemoryDetailResponse(before=before, after=after, data=data)

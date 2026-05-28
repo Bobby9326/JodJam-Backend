@@ -34,7 +34,10 @@ class StatService:
         longest_streak = max(streaks) if streaks else 0
         average_rating = sum(m.rating for m in memories) / len(memories) if memories else 0
         record_day = len(memories)
-        record_rating = max((m.rating for m in memories), default=0)
+
+        days_in_year = 366 if calendar.isleap(year) else 365
+
+        record_rating = round(record_day / days_in_year * 100, 2)
         return OverviewResponse(
             current_streak=current_streak,
             longest_streak=longest_streak,
@@ -53,7 +56,7 @@ class StatService:
         weekday, weekday_count = max(weekday_counts.items(), key=lambda item: item[1], default=(None, 0))
 
         days_in_year = 366 if calendar.isleap(year) else 365
-        percentage = (count / days_in_year * 100)
+        percentage = round(count / days_in_year * 100, 2) 
 
         return MoodStatsResponse(
             mood=mood,

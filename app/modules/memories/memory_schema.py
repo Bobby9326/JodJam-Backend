@@ -54,6 +54,7 @@ class MemoryDetailData(BaseModel):
     note: str
     mood: Mood
     rating: int
+    img_url: str
 
 
 class MemoryDetailResponse(BaseModel):

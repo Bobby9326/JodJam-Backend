@@ -1,6 +1,6 @@
 from datetime import date as Date
 
-from fastapi.params import Depends, File, Query
+from fastapi.params import Depends, File, Form, Query
 import jwt
 from fastapi import APIRouter,  HTTPException, UploadFile
 from fastapi.security import APIKeyCookie
@@ -38,9 +38,9 @@ def get_memory_service(session: Session = Depends(get_session)) -> MemoryService
 
 @router.post("", response_model=CreateMemoryResponse, status_code=201)
 async def create_memory(
-    note: str,
-    mood: Mood,
-    rating: int,
+    note: str = Form(...),
+    mood: Mood = Form(...),
+    rating: int = Form(...),
     file: UploadFile = File(...),
     user_id: str = Depends(get_current_user_id),
     service: MemoryService = Depends(get_memory_service),

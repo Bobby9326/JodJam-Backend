@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from sqlmodel import Session
 
 from app.core.config import settings
@@ -54,15 +54,7 @@ async def auth_google_callback(
 
     user, access_token, refresh_token = auth_service.handle_google_login(user_info)
 
-    response = JSONResponse({
-        "message": "login success",
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "username": user.username,
-            "picture": user.profile_url,
-        },
-    })
+    response = RedirectResponse(url="http://localhost:5173/")  # frontend URL
 
     response.set_cookie(
         key="access_token",
