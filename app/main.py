@@ -19,7 +19,6 @@ from app.core.logger import logger
 # Lifespan function to run startup/shutdown code
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("DATABASE_URL:", settings.DATABASE_URL)
     init_db()
     logger.info("JodJam API started")
     logger.info(
