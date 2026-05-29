@@ -64,7 +64,8 @@ app.add_middleware(
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.JWT_SECRET,
-    same_site="none"
+    same_site="none",
+    https_only=True
 )
 
 
