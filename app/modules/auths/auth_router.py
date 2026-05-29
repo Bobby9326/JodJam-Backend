@@ -60,7 +60,7 @@ async def auth_google_callback(
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=False,
+        secure=True,
         samesite="none",
         max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
@@ -68,7 +68,7 @@ async def auth_google_callback(
         key="refresh_token",
         value=refresh_token,
         httponly=True,
-        secure=False,
+        secure=True,
         samesite="none",
         max_age=REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
     )
