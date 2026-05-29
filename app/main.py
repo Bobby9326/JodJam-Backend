@@ -84,7 +84,11 @@ app.include_router(api_router)
 async def root():
     return RedirectResponse(url="/docs")
 
-@app.get("/health", tags=["Health"])
+@app.api_route(
+    "/health",
+    methods=["GET", "HEAD"],
+    tags=["Health"],
+)
 async def health():
     return {
         "status": "ok",
