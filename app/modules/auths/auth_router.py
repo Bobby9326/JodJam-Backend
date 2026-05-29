@@ -61,7 +61,7 @@ async def auth_google_callback(
         value=access_token,
         httponly=True,
         secure=False,
-        samesite="lax",
+        samesite="none",
         max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     )
     response.set_cookie(
@@ -69,7 +69,7 @@ async def auth_google_callback(
         value=refresh_token,
         httponly=True,
         secure=False,
-        samesite="lax",
+        samesite="none",
         max_age=REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
     )
 
