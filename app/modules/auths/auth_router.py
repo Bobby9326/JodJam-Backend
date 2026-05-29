@@ -54,7 +54,7 @@ async def auth_google_callback(
 
     user, access_token, refresh_token = auth_service.handle_google_login(user_info)
 
-    response = RedirectResponse(url="http://localhost:5173/")  # frontend URL
+    response = RedirectResponse(url=settings.FRONTEND_URL)  # frontend URL
 
     response.set_cookie(
         key="access_token",
