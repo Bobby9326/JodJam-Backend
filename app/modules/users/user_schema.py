@@ -9,7 +9,7 @@ class MeResponse(BaseModel):
     username: str
     profile_url: str | None = None
     bio: str | None = None
-    first_date: Date
+    first_date: Date | None = None
     amount_of_memories: int
     number_of_days_joined: int
 
