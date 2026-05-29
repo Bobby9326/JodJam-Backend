@@ -16,6 +16,8 @@ class Settings(
     GOOGLE_CLIENT_ID: str
 
     GOOGLE_CLIENT_SECRET: str
+    
+    GOOGLE_REDIRECT_URI: str
 
     JWT_SECRET: str
 

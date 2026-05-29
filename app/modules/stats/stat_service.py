@@ -78,7 +78,7 @@ class StatService:
         mood_counts: dict[str, int] = Counter(m.mood for m in memories)
         total_days = len(memories)
 
-        mood_stats : dict[str, MoodStats] = {mood: MoodStats(count=count, percentage=(count / total_days * 100)) for mood, count in mood_counts.items()}
+        mood_stats : dict[str, MoodStats] = {mood: MoodStats(count=count, percentage=round(count / total_days * 100, 2)) for mood, count in mood_counts.items()}
 
         return YearlyMoodStatsResponse(**{mood: mood_stats.get(mood, MoodStats(count=0, percentage=0)) for mood in ['happy', 'sad', 'tired', 'stressed', 'excited', 'angry', 'bored', 'lonely']})
 
