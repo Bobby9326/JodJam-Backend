@@ -13,6 +13,7 @@ from app.modules.auths.auth_router import router as auth_router
 from app.modules.memories.memory_router import router as memory_router
 from app.modules.users.user_router import router as user_router
 from app.modules.stats.stat_router import router as stat_router
+from app.modules.health.health_router import router as health_router
 from app.core.logger import logger
 
 
@@ -77,6 +78,7 @@ api_router.include_router(auth_router)
 api_router.include_router(memory_router)
 api_router.include_router(user_router) 
 api_router.include_router(stat_router)
+api_router.include_router(health_router)
 
 app.include_router(api_router)
 
@@ -86,14 +88,3 @@ app.include_router(api_router)
 async def root():
     return RedirectResponse(url="/docs")
 
-@app.api_route(
-    "/health",
-    methods=["GET", "HEAD"],
-    tags=["Health"],
-)
-async def health():
-    return {
-        "status": "ok",
-        "service": "JodJam API",
-        "version": "1.0.0",
-    }
