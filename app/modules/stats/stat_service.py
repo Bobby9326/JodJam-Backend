@@ -52,7 +52,8 @@ class StatService:
         mood_counts: dict[str, int] = Counter(m.mood for m in memories)
         mood, count = max(mood_counts.items(), key=lambda item: item[1], default=(None, 0))
 
-        weekday_counts: dict[str, int] = Counter(m.memory_date.strftime("%A").lower() for m in memories)
+        filtered_memories = [m for m in memories if m.mood == mood]
+        weekday_counts: dict[str, int] = Counter(m.memory_date.strftime("%A").lower() for m in filtered_memories)
         weekday, weekday_count = max(weekday_counts.items(), key=lambda item: item[1], default=(None, 0))
 
         days_in_year = 366 if calendar.isleap(year) else 365
