@@ -1,4 +1,5 @@
-from datetime import date as Date
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from fastapi.params import Depends, File, Form, Query
 import jwt
@@ -58,7 +59,7 @@ async def create_memory(
     if len(file_bytes) > MAX_FILE_SIZE:
         raise HTTPException(status_code=400, detail="File too large. Max 5MB.")
 
-    memory_date = Date.today()  # Use current date for memory entry; can be changed to accept from client if needed
+    memory_date = datetime.now(ZoneInfo("Asia/Bangkok")).date()
 
     try:
         return service.create_memory(
